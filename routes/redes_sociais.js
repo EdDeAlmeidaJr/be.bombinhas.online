@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { RedesSociais } = require("../models");
-
-const { authMiddleware } = require("../middlewares/auth");
+const authMiddleware = require("../middlewares/auth");
 
 router.post("/", authMiddleware, async (req, res) => {
   try {

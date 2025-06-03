@@ -5,7 +5,7 @@ const { Cliente } = require("../models");
 const { generateToken } = require("../middlewares/auth");
 
 // Rota de login
-router.post("/login", async (req, res) => {
+router.post("/", async (req, res) => {
   const { email, senha } = req.body;
 
   if (!email || !senha) {

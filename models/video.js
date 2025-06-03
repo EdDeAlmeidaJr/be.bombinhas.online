@@ -1,4 +1,5 @@
 "use strict";
+
 module.exports = (sequelize, DataTypes) => {
   const Video = sequelize.define(
     "Video",
@@ -37,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       as: "campanha",
     });
 
-    Video.hasMany(models.RegistroClique, {
+    Video.hasMany(models.Clique, {
       foreignKey: "video_id",
       as: "cliques",
     });
