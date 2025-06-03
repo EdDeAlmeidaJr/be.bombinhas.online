@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Clique } = require("../models");
 const { v4: uuidv4 } = require("uuid");
+
 const authMiddleware = require("../middlewares/auth");
 
 // Criar novo clique (geralmente feito automaticamente pelo endpoint público)
@@ -41,7 +42,7 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Buscar um clique específico (privado)
+// Buscar um clique específico (privado, requer token)
 router.get("/:id", authMiddleware, async (req, res) => {
   try {
     const clique = await Clique.findByPk(req.params.id);
@@ -53,43 +54,6 @@ router.get("/:id", authMiddleware, async (req, res) => {
     res.json(clique);
   } catch (err) {
     res.status(500).json({ erro: "Erro ao buscar clique." });
-  }
-});
-
-// Atualizar clique (pouco comum, mas aqui está)
-router.put("/:id", authMiddleware, async (req, res) => {
-  const { rede_social, ip } = req.body;
-
-  try {
-    const clique = await Clique.findByPk(req.params.id);
-
-    if (!clique) {
-      return res.status(404).json({ erro: "Clique não encontrado." });
-    }
-
-    if (rede_social) clique.rede_social = rede_social;
-    if (ip) clique.ip = ip;
-
-    await clique.save();
-    res.json({ mensagem: "Clique atualizado com sucesso." });
-  } catch (err) {
-    res.status(500).json({ erro: "Erro ao atualizar clique." });
-  }
-});
-
-// Deletar clique
-router.delete("/:id", authMiddleware, async (req, res) => {
-  try {
-    const clique = await Clique.findByPk(req.params.id);
-
-    if (!clique) {
-      return res.status(404).json({ erro: "Clique não encontrado." });
-    }
-
-    await clique.destroy();
-    res.json({ mensagem: "Clique removido com sucesso." });
-  } catch (err) {
-    res.status(500).json({ erro: "Erro ao remover clique." });
   }
 });
 

@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { RedesSociais } = require("../models");
+
 const { authMiddleware } = require("../middlewares/auth");
 
-// Criar uma nova rede social
 router.post("/", authMiddleware, async (req, res) => {
   try {
     const { nome } = req.body;
@@ -18,7 +18,6 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Listar todas as redes sociais
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const redes = await RedesSociais.findAll();
@@ -30,7 +29,6 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Buscar uma rede social por ID
 router.get("/:id", authMiddleware, async (req, res) => {
   try {
     const rede = await RedesSociais.findByPk(req.params.id);
@@ -45,7 +43,6 @@ router.get("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// Atualizar uma rede social
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const { nome } = req.body;
@@ -63,7 +60,6 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// Deletar uma rede social
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const rede = await RedesSociais.findByPk(req.params.id);

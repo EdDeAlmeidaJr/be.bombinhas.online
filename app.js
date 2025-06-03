@@ -18,17 +18,14 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
 
 // Rotas públicas
-app.use("/api", require("./routes/public"));
-app.use("/r", require("./routes/rastreamento"));
-
-// Middleware de autenticação para rotas privadas
-const checkAuth = require("./middlewares/auth");
-
+app.use("/api/auth", require("./routes/auth"));
 // Rotas privadas (requerem token)
-app.use("/api/clientes", checkAuth, require("./routes/clientes"));
-app.use("/api/campanhas", checkAuth, require("./routes/campanhas"));
-app.use("/api/videos", checkAuth, require("./routes/videos"));
-app.use("/api/estatisticas", checkAuth, require("./routes/estatisticas"));
+app.use("/api/camp", require("./routes/campanhas"));
+app.use("/api/clie", require("./routes/clientes"));
+app.use("/api/cliq", require("./routes/cliques"));
+app.use("/api/esta", require("./routes/estatisticas"));
+app.use("/api/rede", require("./routes/redes_sociais"));
+app.use("/api/vide", require("./routes/videos"));
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {

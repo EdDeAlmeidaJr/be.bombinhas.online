@@ -1,12 +1,11 @@
-// routes/estatisticas.js
-
 const express = require("express");
 const router = express.Router();
 const { Op } = require("sequelize");
 const { Clique, Video, Campanha, Cliente } = require("../models");
 
-// Número de cliques por vídeo
-router.get("/cliques-por-video", async (req, res) => {
+const authMiddleware = require("../middlewares/auth");
+
+router.get("/cliques-por-video", authMiddleware, async (req, res) => {
   try {
     const resultados = await Clique.findAll({
       attributes: [
@@ -22,17 +21,15 @@ router.get("/cliques-por-video", async (req, res) => {
 
     res.json(resultados);
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        erro: "Erro ao buscar estatísticas por vídeo",
-        detalhes: err.message,
-      });
+    res.status(500).json({
+      erro: "Erro ao buscar estatísticas por vídeo",
+      detalhes: err.message,
+    });
   }
 });
 
 // Número de cliques por campanha
-router.get("/cliques-por-campanha", async (req, res) => {
+router.get("/cliques-por-campanha", authMiddleware, async (req, res) => {
   try {
     const resultados = await Clique.findAll({
       attributes: [
@@ -48,17 +45,15 @@ router.get("/cliques-por-campanha", async (req, res) => {
 
     res.json(resultados);
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        erro: "Erro ao buscar estatísticas por campanha",
-        detalhes: err.message,
-      });
+    res.status(500).json({
+      erro: "Erro ao buscar estatísticas por campanha",
+      detalhes: err.message,
+    });
   }
 });
 
 // Número de cliques por rede social
-router.get("/cliques-por-rede", async (req, res) => {
+router.get("/cliques-por-rede", authMiddleware, async (req, res) => {
   try {
     const resultados = await Clique.findAll({
       attributes: [
@@ -73,17 +68,15 @@ router.get("/cliques-por-rede", async (req, res) => {
 
     res.json(resultados);
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        erro: "Erro ao buscar estatísticas por rede social",
-        detalhes: err.message,
-      });
+    res.status(500).json({
+      erro: "Erro ao buscar estatísticas por rede social",
+      detalhes: err.message,
+    });
   }
 });
 
 // Número de cliques por cliente
-router.get("/cliques-por-cliente", async (req, res) => {
+router.get("/cliques-por-cliente", authMiddleware, async (req, res) => {
   try {
     const resultados = await Clique.findAll({
       attributes: [
@@ -99,12 +92,10 @@ router.get("/cliques-por-cliente", async (req, res) => {
 
     res.json(resultados);
   } catch (err) {
-    res
-      .status(500)
-      .json({
-        erro: "Erro ao buscar estatísticas por cliente",
-        detalhes: err.message,
-      });
+    res.status(500).json({
+      erro: "Erro ao buscar estatísticas por cliente",
+      detalhes: err.message,
+    });
   }
 });
 

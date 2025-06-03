@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { Campanha } = require("../models");
 const { v4: uuidv4 } = require("uuid");
+
 const authMiddleware = require("../middlewares/auth");
 
-// Criar nova campanha
 router.post("/", authMiddleware, async (req, res) => {
   const { cliente_id, nome } = req.body;
 
@@ -30,7 +30,6 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Listar todas as campanhas
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const campanhas = await Campanha.findAll();
@@ -40,7 +39,6 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Obter uma campanha específica
 router.get("/:id", authMiddleware, async (req, res) => {
   try {
     const campanha = await Campanha.findByPk(req.params.id);
@@ -55,7 +53,6 @@ router.get("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// Atualizar uma campanha
 router.put("/:id", authMiddleware, async (req, res) => {
   const { nome } = req.body;
 
@@ -75,7 +72,6 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// Deletar uma campanha
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const campanha = await Campanha.findByPk(req.params.id);

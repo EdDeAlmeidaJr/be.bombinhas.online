@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Video } = require("../models");
 const { v4: uuidv4 } = require("uuid");
+
 const authMiddleware = require("../middlewares/auth");
 
 // Criar novo vídeo
@@ -11,7 +12,7 @@ router.post("/", authMiddleware, async (req, res) => {
   if (!campanha_id || !titulo || !url) {
     return res
       .status(400)
-      .json({ erro: "camapnha_id, titulo e url são obrigatórios." });
+      .json({ erro: "campanha_id, titulo e url são obrigatórios." });
   }
 
   try {

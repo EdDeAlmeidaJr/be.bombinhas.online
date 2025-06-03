@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const { Cliente } = require("../models");
 const { v4: uuidv4 } = require("uuid");
+
 const authMiddleware = require("../middlewares/auth");
 
 // Criar cliente (sem autenticação)
@@ -28,12 +29,10 @@ router.post("/", async (req, res) => {
       senha_hash,
     });
 
-    res
-      .status(201)
-      .json({
-        mensagem: "Cliente cadastrado com sucesso.",
-        id: novoCliente.id,
-      });
+    res.status(201).json({
+      mensagem: "Cliente cadastrado com sucesso.",
+      id: novoCliente.id,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ erro: "Erro ao cadastrar cliente." });
