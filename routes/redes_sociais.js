@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { RedesSociais } = require("../models");
-const authMiddleware = require("../middlewares/auth");
+const { authenticateToken } = require("../middlewares/auth");
 
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", authenticateToken, async (req, res) => {
   try {
     const { nome } = req.body;
     if (!nome) return res.status(400).json({ erro: "Nome é obrigatório." });
@@ -17,7 +17,7 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
   try {
     const redes = await RedesSociais.findAll();
     res.json(redes);
@@ -28,7 +28,7 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/:id", authMiddleware, async (req, res) => {
+router.get("/:id", authenticateToken, async (req, res) => {
   try {
     const rede = await RedesSociais.findByPk(req.params.id);
     if (!rede)
@@ -42,7 +42,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-router.put("/:id", authMiddleware, async (req, res) => {
+router.put("/:id", authenticateToken, async (req, res) => {
   try {
     const { nome } = req.body;
     const rede = await RedesSociais.findByPk(req.params.id);
@@ -59,7 +59,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
   try {
     const rede = await RedesSociais.findByPk(req.params.id);
     if (!rede)

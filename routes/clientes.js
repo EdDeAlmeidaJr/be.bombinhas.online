@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const { Cliente } = require("../models");
 const { v4: uuidv4 } = require("uuid");
 
-const authMiddleware = require("../middlewares/auth");
+const { authenticateToken } = require("../middlewares/auth");
 
 // Criar cliente (sem autenticação)
 router.post("/", async (req, res) => {
@@ -40,7 +40,7 @@ router.post("/", async (req, res) => {
 });
 
 // Listar todos os clientes (protegido)
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
   try {
     const clientes = await Cliente.findAll({
       attributes: { exclude: ["senha_hash"] },
@@ -52,7 +52,7 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 // Obter um cliente específico (protegido)
-router.get("/:id", authMiddleware, async (req, res) => {
+router.get("/:id", authenticateToken, async (req, res) => {
   try {
     const cliente = await Cliente.findByPk(req.params.id, {
       attributes: { exclude: ["senha_hash"] },
@@ -68,7 +68,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
 });
 
 // Atualizar um cliente (protegido)
-router.put("/:id", authMiddleware, async (req, res) => {
+router.put("/:id", authenticateToken, async (req, res) => {
   const { nome, email, empresa, senha } = req.body;
 
   try {
@@ -92,7 +92,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 });
 
 // Deletar um cliente (protegido)
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
   try {
     const cliente = await Cliente.findByPk(req.params.id);
     if (!cliente)

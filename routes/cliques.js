@@ -3,7 +3,7 @@ const router = express.Router();
 const { Clique } = require("../models");
 const { v4: uuidv4 } = require("uuid");
 
-const authMiddleware = require("../middlewares/auth");
+const { authenticateToken } = require("../middlewares/auth");
 
 // Criar novo clique (geralmente feito automaticamente pelo endpoint público)
 router.post("/", async (req, res) => {
@@ -33,7 +33,7 @@ router.post("/", async (req, res) => {
 });
 
 // Listar todos os cliques (privado, requer token)
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
   try {
     const cliques = await Clique.findAll();
     res.json(cliques);
@@ -43,7 +43,7 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 // Buscar um clique específico (privado, requer token)
-router.get("/:id", authMiddleware, async (req, res) => {
+router.get("/:id", authenticateToken, async (req, res) => {
   try {
     const clique = await Clique.findByPk(req.params.id);
 

@@ -3,9 +3,9 @@ const router = express.Router();
 const { Op } = require("sequelize");
 const { Clique, Video, Campanha, Cliente } = require("../models");
 
-const authMiddleware = require("../middlewares/auth");
+const { authenticateToken } = require("../middlewares/auth");
 
-router.get("/cliques-por-video", authMiddleware, async (req, res) => {
+router.get("/cliques-por-video", authenticateToken, async (req, res) => {
   try {
     const resultados = await Clique.findAll({
       attributes: [
@@ -29,7 +29,7 @@ router.get("/cliques-por-video", authMiddleware, async (req, res) => {
 });
 
 // Número de cliques por campanha
-router.get("/cliques-por-campanha", authMiddleware, async (req, res) => {
+router.get("/cliques-por-campanha", authenticateToken, async (req, res) => {
   try {
     const resultados = await Clique.findAll({
       attributes: [
@@ -53,7 +53,7 @@ router.get("/cliques-por-campanha", authMiddleware, async (req, res) => {
 });
 
 // Número de cliques por rede social
-router.get("/cliques-por-rede", authMiddleware, async (req, res) => {
+router.get("/cliques-por-rede", authenticateToken, async (req, res) => {
   try {
     const resultados = await Clique.findAll({
       attributes: [
@@ -76,7 +76,7 @@ router.get("/cliques-por-rede", authMiddleware, async (req, res) => {
 });
 
 // Número de cliques por cliente
-router.get("/cliques-por-cliente", authMiddleware, async (req, res) => {
+router.get("/cliques-por-cliente", authenticateToken, async (req, res) => {
   try {
     const resultados = await Clique.findAll({
       attributes: [

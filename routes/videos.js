@@ -3,10 +3,10 @@ const router = express.Router();
 const { Video } = require("../models");
 const { v4: uuidv4 } = require("uuid");
 
-const authMiddleware = require("../middlewares/auth");
+const { authenticateToken } = require("../middlewares/auth");
 
 // Criar novo vídeo
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", authenticateToken, async (req, res) => {
   const { campanha_id, titulo, url } = req.body;
 
   if (!campanha_id || !titulo || !url) {
@@ -33,7 +33,7 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 // Listar todos os vídeos
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
   try {
     const videos = await Video.findAll();
     res.json(videos);
@@ -43,7 +43,7 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 // Obter um vídeo específico
-router.get("/:id", authMiddleware, async (req, res) => {
+router.get("/:id", authenticateToken, async (req, res) => {
   try {
     const video = await Video.findByPk(req.params.id);
 
@@ -58,7 +58,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
 });
 
 // Atualizar um vídeo
-router.put("/:id", authMiddleware, async (req, res) => {
+router.put("/:id", authenticateToken, async (req, res) => {
   const { titulo, url } = req.body;
 
   try {
@@ -79,7 +79,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 });
 
 // Deletar um vídeo
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
   try {
     const video = await Video.findByPk(req.params.id);
 

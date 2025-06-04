@@ -3,9 +3,9 @@ const router = express.Router();
 const { Campanha } = require("../models");
 const { v4: uuidv4 } = require("uuid");
 
-const authMiddleware = require("../middlewares/auth");
+const { authenticateToken } = require("../middlewares/auth");
 
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", authenticateToken, async (req, res) => {
   const { cliente_id, nome } = req.body;
 
   if (!cliente_id || !nome) {
@@ -30,7 +30,7 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
   try {
     const campanhas = await Campanha.findAll();
     res.json(campanhas);
@@ -39,7 +39,7 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/:id", authMiddleware, async (req, res) => {
+router.get("/:id", authenticateToken, async (req, res) => {
   try {
     const campanha = await Campanha.findByPk(req.params.id);
 
@@ -53,7 +53,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-router.put("/:id", authMiddleware, async (req, res) => {
+router.put("/:id", authenticateToken, async (req, res) => {
   const { nome } = req.body;
 
   try {
@@ -72,7 +72,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
   try {
     const campanha = await Campanha.findByPk(req.params.id);
 

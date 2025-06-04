@@ -1,25 +1,36 @@
 const jwt = require("jsonwebtoken");
 
-// Chave secreta do JWT (em produção, isso deve vir de variável de ambiente)
-const JWT_SECRET = process.env.JWT_SECRET || "segredo_super_secreto";
+const JWT_SECRET = process.env.JWT_SECRET || "minha_chave_secreta";
 
-function autenticarToken(req, res, next) {
+function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ erro: "Token não fornecido." });
+  if (!authHeader) {
+    return res.status(401).json({ mensagem: "Token não fornecido" });
   }
 
   const token = authHeader.split(" ")[1];
 
-  jwt.verify(token, JWT_SECRET, (err, cliente) => {
+  if (!token) {
+    return res.status(401).json({ mensagem: "Token malformado" });
+  }
+
+  jwt.verify(token, JWT_SECRET, (err, decoded) => {
     if (err) {
-      return res.status(403).json({ erro: "Token inválido ou expirado." });
+      return res.status(403).json({ mensagem: "Token inválido" });
     }
 
-    req.cliente = cliente; // cliente_id e outros dados vêm do payload do JWT
+    req.usuario = decoded;
     next();
   });
 }
 
-module.exports = autenticarToken;
+// Função adicionada para gerar token JWT
+function generateToken(payload) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: "1h" });
+}
+
+module.exports = {
+  authenticateToken,
+  generateToken,
+};
