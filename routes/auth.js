@@ -6,6 +6,7 @@ const { generateToken } = require("../middlewares/auth");
 
 // Rota de login
 router.post("/", async (req, res) => {
+  console.log(req.body);
   const { email, senha } = req.body;
 
   if (!email || !senha) {
