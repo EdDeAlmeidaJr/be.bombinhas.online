@@ -6,7 +6,6 @@ const { generateToken } = require("../middlewares/auth");
 
 // Rota de login
 router.post("/", async (req, res) => {
-  console.log(req.body);
   const { email, senha } = req.body;
 
   if (!email || !senha) {
@@ -27,7 +26,7 @@ router.post("/", async (req, res) => {
     }
 
     const token = generateToken({ id: cliente.id, email: cliente.email });
-    res.json({ token });
+    res.status(200).json({ jwt: token });
   } catch (err) {
     console.error(err);
     res.status(500).json({ erro: "Erro ao realizar login" });
